@@ -1,0 +1,27 @@
+<div id="game-container">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <div id="main-menu" class="overlay">
+        <h1>Core Defense</h1>
+        <button onclick="startGame()">Start Playtest</button>
+        <button onclick="showEncyclopedia()">Encyclopedia</button>
+    </div>
+
+    <div id="encyclopedia" class="overlay hidden">
+        <h2>Archive</h2>
+        <div class="tabs">
+            <button onclick="showTab('towers')">Towers</button>
+            <button onclick="showTab('enemies')">Enemies</button>
+        </div>
+        <div id="enc-content"></div>
+        <button onclick="hideEncyclopedia()">Back</button>
+    </div>
+
+    <div id="game-ui" class="hidden">
+        <div class="hotbar">
+            <button onclick="selectTower('turret')">1: Turret ($100)</button>
+            <button onclick="selectTower('splash')">2: Splash ($200)</button>
+        </div>
+        <div id="stats">Wave: <span id="wave-num">1</span> | Gold: $<span id="gold">500</span></div>
+    </div>
+</div>
