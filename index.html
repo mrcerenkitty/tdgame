@@ -1,27 +1,43 @@
-<div id="game-container">
-    <canvas id="gameCanvas" width="800" height="600"></canvas>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Core Defense TD</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-    <div id="main-menu" class="overlay">
-        <h1>Core Defense</h1>
-        <button onclick="startGame()">Start Playtest</button>
-        <button onclick="showEncyclopedia()">Encyclopedia</button>
-    </div>
+    <div id="game-container">
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
 
-    <div id="encyclopedia" class="overlay hidden">
-        <h2>Archive</h2>
-        <div class="tabs">
-            <button onclick="showTab('towers')">Towers</button>
-            <button onclick="showTab('enemies')">Enemies</button>
+        <div id="main-menu" class="ui-layer">
+            <h1>CORE DEFENSE</h1>
+            <button class="menu-btn" onclick="startGame()">START PLAYTEST</button>
+            <button class="menu-btn" onclick="toggleEncyclopedia(true)">ENCYCLOPEDIA</button>
         </div>
-        <div id="enc-content"></div>
-        <button onclick="hideEncyclopedia()">Back</button>
+
+        <div id="encyclopedia" class="ui-layer hidden">
+            <h2>ARCHIVE</h2>
+            <div class="tab-container">
+                <button onclick="renderEnc('towers')">TOWERS</button>
+                <button onclick="renderEnc('enemies')">ENEMIES</button>
+            </div>
+            <div id="enc-content"></div>
+            <button class="menu-btn" onclick="toggleEncyclopedia(false)">BACK</button>
+        </div>
+
+        <div id="game-ui" class="hidden">
+            <div class="stats">
+                Wave: <span id="wave-txt">1</span> | Gold: $<span id="gold-txt">500</span>
+            </div>
+            <div class="hotbar">
+                <button id="btn-turret" onclick="selectTower('turret')">1: Turret ($100)</button>
+                <button id="btn-splash" onclick="selectTower('splash')">2: Blast ($200)</button>
+            </div>
+        </div>
     </div>
 
-    <div id="game-ui" class="hidden">
-        <div class="hotbar">
-            <button onclick="selectTower('turret')">1: Turret ($100)</button>
-            <button onclick="selectTower('splash')">2: Splash ($200)</button>
-        </div>
-        <div id="stats">Wave: <span id="wave-num">1</span> | Gold: $<span id="gold">500</span></div>
-    </div>
-</div>
+    <script src="game.js"></script>
+</body>
+</html>
