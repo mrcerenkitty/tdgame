@@ -13,6 +13,87 @@ let particles = [];
 let isPaused = false;
 let gameActive = false;
 
+// Add to your Game State variables
+let playerHP = 100;
+let floatingTexts = []; // For damage numbers
+
+// Update your updateUI function
+function updateUI() {
+    document.getElementById('gold-txt').innerText = gold;
+    document.getElementById('wave-txt').innerText = wave;
+    document.getElementById('hp-txt').innerText = playerHP;
+    
+    if (playerHP <= 0) gameOver();
+}
+
+function gameOver() {
+    gameActive = false;
+    document.getElementById('main-menu').classList.remove('hidden');
+    document.querySelector('#main-menu h1').innerText = "GAME OVER";
+    document.querySelector('.subtitle').innerText = `You survived until Wave ${wave}`;
+}
+
+// Inside your gameLoop(), update the Enemy section:
+// 3. UPDATE & DRAW ENEMIES
+for (let i = enemies.length - 1; i >= 0; i--) {
+    let e = enemies[i];
+    let targetWp = waypoints[e.wpIdx];
+    let dx = targetWp.x - e.x;
+    let dy = targetWp.y - e.y;
+    let dist = Math.hypot(dx, dy);
+
+    if (dist < e.speed) {
+        e.x = targetWp.x; e.y = targetWp.y;
+        e.wpIdx++;
+        if (e.wpIdx >= waypoints.length) {
+            // ENEMY REACHED THE END
+            playerHP -= 10; // Lose health
+            enemies.splice(i, 1);
+            updateUI();
+            continue;
+        }
+    } else {
+        e.x += (dx / dist) * e.speed;
+        e.y += (dy / dist) * e.speed;
+    }
+    
+    // Draw Enemy
+    ctx.fillStyle = "#e74c3c"; ctx.fillRect(e.x - 10, e.y - 10, 20, 20);
+    
+    // Draw Enemy HP Bar
+    ctx.fillStyle = "#555"; ctx.fillRect(e.x - 12, e.y - 20, 24, 4); // Background bar
+    ctx.fillStyle = "#2ecc71"; ctx.fillRect(e.x - 12, e.y - 20, (e.hp/e.maxHp) * 24, 4);
+    
+    // Draw HP Number above enemy
+    ctx.fillStyle = "white";
+    ctx.font = "10px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText(Math.ceil(e.hp), e.x, e.y - 25);
+
+    if (e.hp <= 0) {
+        enemies.splice(i, 1);
+        gold += 15;
+        updateUI();
+    }
+}
+
+// Inside the Bullet collision logic, add this to show damage:
+if (dist < b.speed) {
+    if (b.splash > 0) {
+        explosions.push({ x: b.x, y: b.y, radius: 10, maxRadius: b.splash, alpha: 1 });
+        enemies.forEach(en => {
+            if (Math.hypot(en.x - b.x, en.y - b.y) < b.splash) {
+                en.hp -= b.dmg;
+            }
+        });
+    } else {
+        const target = enemies.find(en => Math.hypot(en.x - b.x, en.y - b.y) < 20);
+        if (target) target.hp -= b.dmg;
+    }
+    bullets.splice(i, 1);
+}
+
+
 // Mouse Tracking
 let mouseX = 0;
 let mouseY = 0;
