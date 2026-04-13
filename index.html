@@ -12,25 +12,35 @@
         <canvas id="gameCanvas" width="800" height="600"></canvas>
 
         <div id="main-menu" class="ui-layer">
-            <h1>CORE DEFENSE</h1>
-            <button class="menu-btn" onclick="startGame()">START PLAYTEST</button>
-            <button class="menu-btn" onclick="toggleEncyclopedia(true)">ENCYCLOPEDIA</button>
+            <div class="menu-box">
+                <h1>CORE DEFENSE</h1>
+                <p class="subtitle">Alpha Build 0.1</p>
+                <button class="menu-btn" onclick="startGame()">START PLAYTEST</button>
+                <button class="menu-btn" onclick="toggleEncyclopedia(true)">ENCYCLOPEDIA</button>
+            </div>
         </div>
 
         <div id="encyclopedia" class="ui-layer hidden">
-            <h2>ARCHIVE</h2>
-            <div class="tab-container">
-                <button onclick="renderEnc('towers')">TOWERS</button>
-                <button onclick="renderEnc('enemies')">ENEMIES</button>
+            <div class="menu-box">
+                <h2>ARCHIVE</h2>
+                <div class="tab-container">
+                    <button class="menu-btn" style="padding: 5px 15px;" onclick="renderEnc('towers')">TOWERS</button>
+                    <button class="menu-btn" style="padding: 5px 15px;" onclick="renderEnc('enemies')">ENEMIES</button>
+                </div>
+                <div id="enc-content"></div>
+                <button class="menu-btn" onclick="toggleEncyclopedia(false)">BACK</button>
             </div>
-            <div id="enc-content"></div>
-            <button class="menu-btn" onclick="toggleEncyclopedia(false)">BACK</button>
         </div>
 
         <div id="game-ui" class="hidden">
             <div class="stats">
-                Wave: <span id="wave-txt">1</span> | Gold: $<span id="gold-txt">500</span>
+                Wave: <span id="wave-txt">1</span> | 
+                Gold: $<span id="gold-txt">500</span> | 
+                Core HP: <span id="hp-txt" style="color: #e74c3c; font-weight: bold;">100</span>
             </div>
+            
+            <button class="dev-btn" onclick="addDevMoney()">[DEV] +$100</button>
+
             <div class="hotbar">
                 <button id="btn-turret" onclick="selectTower('turret')">1: Turret ($100)</button>
                 <button id="btn-splash" onclick="selectTower('splash')">2: Blast ($200)</button>
