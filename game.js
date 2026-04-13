@@ -10,6 +10,67 @@ let towers = [];
 let bullets = [];
 let isPaused = false;
 let gameActive = false;
+let particles = [];
+
+function createMenuParticles() {
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            size: Math.random() * 2
+        });
+    }
+}
+createMenuParticles();
+
+// Update your gameLoop to handle the "Menu State"
+function gameLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (isPaused || !gameActive) {
+        // Draw floating background particles
+        ctx.fillStyle = "rgba(79, 172, 254, 0.5)";
+        particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    if (!isPaused && gameActive) {
+        // ... (Keep all your existing game logic here: path, enemies, towers, bullets)
+        
+        // DRAW PATH
+        ctx.fillStyle = "#34495e";
+        ctx.fillRect(0, 280, 800, 40);
+
+        // UPDATE ENEMIES
+        for (let i = enemies.length - 1; i >= 0; i--) {
+            let e = enemies[i];
+            e.x += e.speed;
+            ctx.fillStyle = "#e74c3c";
+            ctx.fillRect(e.x, e.y - 10, 20, 20);
+            if (e.hp <= 0) { enemies.splice(i, 1); gold += 20; updateUI(); }
+        }
+
+        // UPDATE TOWERS & BULLETS (Keep your existing code for these)
+        towers.forEach(t => {
+            ctx.fillStyle = t.color;
+            ctx.beginPath(); ctx.arc(t.x, t.y, 15, 0, Math.PI * 2); ctx.fill();
+        });
+        
+        // (Include your bullet logic and collision logic from previous response here)
+    }
+    
+    requestAnimationFrame(gameLoop);
+}
+
 
 // --- CONFIGURATION ---
 const TOWER_TYPES = {
